@@ -27,14 +27,20 @@ function getUserData() {
 /**
  * Create a user document in database
  * 
- * @param {JSON Object} data object to create 
+ * @param {Object} data object to create 
  * @returns 
  */
 async function createUser(data) {
   return await db.createARecord(collectionName, data);
 }
 
+async function findUser(data) {
+  return await db.find(collectionName,data);
+}
+
+
 module.exports = {
   getUserData,
   createUser,
+  findUser
 };

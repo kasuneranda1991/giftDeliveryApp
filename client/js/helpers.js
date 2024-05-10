@@ -1,4 +1,9 @@
 /**
+ * API base url
+ */
+const BASE_URL = "http://localhost:3000/";
+
+/**
  * Attaches an event handler to clear the form fields, reset validation errors, and remove 'error' class from input elements before the specified page is shown.
  * @param {string} pageId - The ID of the page to attach the event handler to.
  * @param {string} formId - The ID of the form to be cleared.
@@ -33,19 +38,75 @@ function clearForm(formId) {
  * @param {string} password - The password of the user to authenticate.
  * @returns {boolean} - Returns true if the authentication is successful, otherwise returns false.
  */
-function authenticateUser(email, password) {
-  // Retrieve all users from local storage
-  var allUsers = JSON.parse(localStorage.getItem("allUsers"));
+async function authenticateUser(email, password) {
+  localStorage.removeItem("user");
+  const data = await makeApiCall({
+    url: "auth",
+    method: "POST",
+    data: { email: email, password: password },
+  });
 
-  // Iterate through each user to check for a match
-  for (var i = 0; i < allUsers.length; i++) {
-    var userData = allUsers[i];
-    // Check if email and password match the current user's credentials
-    if (email === userData.email && password === userData.password) {
-      // Store user information in local storage
-      localStorage.setItem("userInfo", JSON.stringify(userData));
-      return true; // Authentication successful
-    }
-  }
-  return false; // Authentication failed
+  data.success
+    ? localStorage.setItem("user", JSON.stringify(data.payload))
+    : null;
+  return data.success;
+}
+
+/**
+ * Create new user + Authenticate
+ * @param {Object} user user object
+ * @returns {boolean} - Returns true if successful, otherwise returns false.
+ */
+async function makeAuthUser(user) {
+  localStorage.removeItem("user");
+  const data = await makeApiCall({
+    url: "user",
+    method: "POST",
+    data: user,
+  });
+
+  return data.success
+    ? await authenticateUser(user.email, user.password)
+    : false;
+}
+
+/**
+ * Create new Order
+ * @param {Object} order object
+ * @returns {Object} - Returns response object.
+ */
+async function placeOrder(order) {
+  return await makeApiCall({
+    url: "order",
+    method: "POST",
+    data: order,
+  });
+}
+
+/**
+ * Get User Orders
+ *
+ * @returns {Object} - Returns orders object.
+ */
+async function getAllOrders() {
+  return await makeApiCall({
+    url: "order?customerlEmail=" + auth().email,
+    method: "GET",
+  });
+}
+
+/**
+ * Delete user all orders
+ *
+ * @returns {Object} - Returns orders object.
+ */
+async function deleteAllOrders() {
+  return await makeApiCall({
+    url: "order?customerlEmail=" + auth().email,
+    method: "DELETE",
+  });
+}
+
+function auth() {
+  return JSON.parse(localStorage.getItem("user"));
 }

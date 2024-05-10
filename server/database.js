@@ -12,7 +12,7 @@ client.connect((err) => {
 
 /**
  * Retrieve a collection from the database
- * @param {String} collectionName 
+ * @param {String} collectionName
  * @returns Mongodb Collection Object
  */
 function getACollection(collectionName) {
@@ -21,23 +21,49 @@ function getACollection(collectionName) {
 
 /**
  * Create a Database Record
- * @param {String} collectionName 
- * @param {JSON} data 
+ * @param {String} collectionName
+ * @param {JSON} data
  * @returns inserted recordId
  */
 async function createARecord(collectionName, data) {
-    try {
-      const collection = getACollection(collectionName);
-      const result = await collection.insertOne(data);
-      return result.insertedId;
-    } catch (error) {
-      console.error("Error creating record:", error);
-      return null;
-    }
+  try {
+    const collection = getACollection(collectionName);
+    const result = await collection.insertOne(data);
+    return result.insertedId;
+  } catch (error) {
+    console.error("Error creating record:", error);
+    return null;
   }
+}
+
+async function find(collectionName, data) {
+  
+  try {
+    const collection = getACollection(collectionName);
+    const result = await collection.findOne(data);
+    return result;
+  } catch (error) {
+    console.error("Error creating record:", error);
+    return null;
+  }
+}
+
+async function deleteRecords(collectionName, data) {
+  
+  try {
+    const collection = getACollection(collectionName);
+    const result = await collection.deleteMany(data);
+    return result;
+  } catch (error) {
+    console.error("Error creating record:", error);
+    return null;
+  }
+}
 
 module.exports = {
   client,
   getACollection,
-  createARecord
+  createARecord,
+  find,
+  deleteRecords
 };

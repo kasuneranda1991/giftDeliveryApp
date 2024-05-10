@@ -6,7 +6,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src *; style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-inline' 'unsafe-eval'"
     />
-    
+
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
@@ -22,8 +22,14 @@
     <script src="./js/jQueryValidation.js"></script>
     <!-- <script src="cordova.js"></script> -->
     <!-- <script type="text/javascript" src="js/Calendar.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/index.min.js" integrity="sha512-xCMh+IX6X2jqIgak2DBvsP6DNPne/t52lMbAUJSjr3+trFn14zlaryZlBcXbHKw8SbrpS0n3zlqSVmZPITRDSQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.11/index.min.js"
+      integrity="sha512-xCMh+IX6X2jqIgak2DBvsP6DNPne/t52lMbAUJSjr3+trFn14zlaryZlBcXbHKw8SbrpS0n3zlqSVmZPITRDSQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="./js/validations.js"></script>
+    <script src="./js/api.js"></script>
     <script src="./js/helpers.js"></script>
     <script src="./js/index.js"></script>
     <title>Gift Delivery</title>
@@ -40,7 +46,7 @@
       <div data-role="content">
         <div class="wrap login">
           <div><img src="img/banner.png" width="100%;" /></div>
-          <form id="loginForm" method="get" action="">
+          <form id="loginForm" method="post" action="">
             <div>
               <input type="email" name="email" placeholder="Enter your Email" />
             </div>
@@ -224,10 +230,10 @@
               </a>
             </li>
             <li>
-              <a href="#userProfile">
-                <img src="./img/me_ac.png" />
+              <a href="#deleteOrders">
+                <img src="./img/delete.png" />
                 <div>
-                  <h3 class="fcolor">User profile</h3>
+                  <h3 class="fcolor">Delete Orders</h3>
                 </div>
               </a>
             </li>
@@ -338,7 +344,7 @@
       <div data-role="content" id="content">
         <div class="wrap">
           <p class="fcolor"><b>Gift details</b></p>
-          <form id="orderForm" method="get" action="">
+          <form id="orderForm" method="post" action="">
             <ul class="ilist">
               <li>
                 <img id="imageSelected" src="" />
@@ -486,7 +492,7 @@
       </div>
     </div>
     <!------------------------User page---------------------------------->
-    <div data-role="page" id="userProfile">
+    <div data-role="page" id="deleteOrders">
       <!------------------------Header---------------------------->
       <div data-role="header" data-theme="d" data-position="fixed">
         <a
@@ -501,7 +507,7 @@
       <!------------------------Main content---------------------------->
       <div data-role="content">
         <div class="wrap pb">
-          <table id="userDetailsTable"></table>
+          <p id="deletedOrderCount">2 orders deleted</p>
           <div>
             <a
               href="javascript:history.go(-1)"
